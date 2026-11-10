@@ -1,0 +1,64 @@
+# ============================================================================
+# 社区便民报修服务管理系统 —— 后端配置
+# 已实现模块：模块零 登录注册与用户管理 / 模块一 报修类目管理
+# ============================================================================
+server:
+  port: 8080
+  servlet:
+    context-path: /          # 接口文档中所有 URL 均以 /api 开头，故此处不额外加前缀
+
+spring:
+  application:
+    name: community-repair-system
+
+  # ------------------------- 数据源 -------------------------
+  # 数据库名与《02-建表SQL（方案A）》保持一致：repair_service_db
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/repair_service_db?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456          # 请改成你本机的 MySQL 密码
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+
+  # ------------------------- 时间序列化 -------------------------
+  # 统一按 yyyy-MM-dd HH:mm:ss 输出（JacksonConfig 中同样做了 LocalDateTime 配置，双保险）
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: always
+
+# ------------------------- MyBatis-Plus -------------------------
+mybatis-plus:
+  # Mapper XML 位置（本模块全部使用 Wrapper 查询，无 XML 文件也不会报错，保留供后续模块使用）
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.community.repair.entity
+  configuration:
+    # 下划线字段 -> 驼峰属性（real_name -> realName）
+    map-underscore-to-camel-case: true
+    # 开发阶段打印 SQL，便于论文截图与调试；生产可改为 org.apache.ibatis.logging.nologging.NoLoggingImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto                 # 主键自增（sys_user.user_id AUTO_INCREMENT）
+      logic-delete-field: deleted   # 全局逻辑删除字段（对应 @TableLogic）
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# ------------------------- JWT 自定义配置 -------------------------
+# 对应 BR-8-07：令牌载荷含 userId 与 role，有效期 7200 秒（2 小时）
+jwt:
+  # HS256 要求密钥长度 >= 32 字节（256 位），此处为毕设演示用密钥，实际项目请放入环境变量
+  secret: community-repair-system-jwt-secret-key-2026-graduation-project
+  # 有效期（秒），固定 7200
+  expire-seconds: 7200
+  # 请求头名称与令牌前缀，对应接口文档 2.7 节 Authorization: Bearer <token>
+  header: Authorization
+  prefix: "Bearer "
+
+# ------------------------- 日志 -------------------------
+logging:
+  level:
+    com.community.repair: debug

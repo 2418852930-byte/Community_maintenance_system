@@ -1,0 +1,39 @@
+# ---------- 前端 ----------
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---------- 后端 ----------
+backend/target/
+backend/build.log
+*.class
+*.jar
+*.war
+
+# ---------- IDE / 编辑器 ----------
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# ---------- 运行日志与临时文件 ----------
+logs/
+*.log
+*.tmp
+
+# ---------- 环境变量 / 本地覆盖配置 ----------
+.env
+.env.local
+.env.*.local
+application-local.yml
+application-local.properties
+
+# ---------- 上传的附件（本地运行产生） ----------
+uploads/

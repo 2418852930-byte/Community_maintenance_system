@@ -1,0 +1,25 @@
+{
+  "name": "community-repair-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "社区便民报修服务管理系统 - 前端（模块零：登录注册与用户管理；模块一：报修类目管理；模块二：报修工单提交；模块三：工单派单调度；模块四：维修进度管理；模块五：工单验收管理；模块六：服务评价管理；模块七：报修统计分析）",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "axios": "^1.6.8",
+    "echarts": "^5.5.0",
+    "element-plus": "^2.6.3",
+    "pinia": "^2.1.7",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "vite": "^5.2.8"
+  }
+}
