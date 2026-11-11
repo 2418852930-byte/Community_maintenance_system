@@ -6,12 +6,16 @@
 
           <div class="avatar-wrap">
             <div class="avatar-ring" :style="{ borderColor: rolePrimary }"></div>
-            <div class="avatar" :style="!userInfo.avatar ? { background: roleGradient } : {}">
-              <!-- 有头像：显示图片；无头像：显示首字母占位 -->
-              <img v-if="userInfo.avatar" :src="userInfo.avatar" class="avatar__img" alt="头像" />
-              <template v-else>{{ (userInfo.realName || 'U').charAt(0) }}</template>
+            <div class="avatar" :style="!effectiveAvatar ? { background: roleGradient } : {}">
+              <!-- 有头像：显示上传图片；无头像 / 加载失败：显示角色感知的默认头像 SVG -->
+              <img
+                :src="effectiveAvatar"
+                :alt="userInfo.realName || '默认头像'"
+                class="avatar__img"
+                @error="onAvatarImgError"
+              />
 
-              <!-- hover 遮罩：相机图标 + 更换提示 -->
+              <!-- hover 遮罩：相机图标 + 更换提示（默认头像也可触发） -->
               <div class="avatar__mask" @click="triggerAvatarUpload">
                 <el-icon :size="20"><Camera /></el-icon>
                 <span>更换头像</span>
@@ -251,19 +255,88 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
-  Lock, EditPen, User, Tools, UserFilled, House
+  Lock, EditPen, User, Tools, UserFilled, House, Camera
 } from '@element-plus/icons-vue'
 import { changePassword, updateProfile } from '@/api/auth'
+import { uploadImage } from '@/api/file'
 import { useUserStore } from '@/store/user'
 
 const userStore = useUserStore()
 const activeTab = ref('profile')
 const userInfo = computed(() => userStore.userInfo || {})
 
+/** 头像上传相关 */
+const avatarInputRef = ref(null)
+const avatarUploading = ref(false)
+
+/**
+ * img 加载失败标记：用户上传的头像 URL 404 / 后端没启动时置 true，
+ * effectiveAvatar 会自动回退到 defaultAvatar。
+ * 重新上传成功后，handleAvatarChange 里要把它 reset 回 false。
+ */
+const avatarLoadFailed = ref(false)
+
+/**
+ * 头像实际显示的 src：
+ *   - userInfo.avatar 存在且没加载过 error → 用户上传的图
+ *   - 否则 → 角色感知的默认头像（base64 SVG）
+ *
+ * 这样即使上传了头像、后端还没启动，也不会出现破图。
+ */
+const effectiveAvatar = computed(() => {
+  if (userInfo.value.avatar && !avatarLoadFailed.value) {
+    return userInfo.value.avatar
+  }
+  return defaultAvatar.value
+})
+
+/**
+ * <img @error> 回调：加载失败时把 ref 置 true，computed 自动回退。
+ * 用箭头函数避免 this 问题。
+ */
+function onAvatarImgError () {
+  avatarLoadFailed.value = true
+}
+
 /** 与需求文档 5.8.5 节「工种」选项保持一致 */
 const workerTypes = ['水电', '门窗', '公共照明', '给排水', '综合']
 
 // ---------- 角色感知 ----------
+
+/**
+ * 未上传头像时的默认头像（base64 SVG data URL）。
+ * 根据角色用不同的渐变色彩 + 统一的人像剪影。
+ * 用 base64 而非 encodeURIComponent(utf8)，避免 data:image/svg+xml;utf8 在
+ * 部分浏览器（尤其是带 Vite HMR 的 dev 模式）解析失败。
+ */
+const defaultAvatar = computed(() => {
+  let c1, c2
+  switch (userStore.role) {
+    case 'admin':
+      c1 = '#f87171'; c2 = '#ef4444'; break
+    case 'repair':
+      c1 = '#fbbf24'; c2 = '#f59e0b'; break
+    default:
+      c1 = '#34d399'; c2 = '#10b981'
+  }
+
+  const svg = `
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="${c1}"/>
+      <stop offset="100%" stop-color="${c2}"/>
+    </linearGradient>
+  </defs>
+  <rect width="80" height="80" rx="40" fill="url(#g)"/>
+  <circle cx="40" cy="32" r="14" fill="rgba(255,255,255,0.92)"/>
+  <path d="M16 76 C16 58, 30 52, 40 52 C50 52, 64 58, 64 76 Z" fill="rgba(255,255,255,0.92)"/>
+</svg>`.trim()
+
+  // base64 编码：先 encodeURIComponent 处理特殊字符，再 unescape 转回，最后 btoa
+  const b64 = btoa(unescape(encodeURIComponent(svg)))
+  return `data:image/svg+xml;base64,${b64}`
+})
 
 /** 角色对应主色 + 渐变 + tint — 左侧头像卡和 pill 统一复用 */
 const rolePrimary = computed(() => {
@@ -359,6 +432,63 @@ const profileRules = {
     { min: 2, max: 10, message: '真实姓名长度需为 2~10 个字符', trigger: 'blur' }
   ],
   email: [{ type: 'email', message: '邮箱格式不正确', trigger: 'blur' }]
+}
+
+/** 触发隐藏的 file input 选择器 */
+function triggerAvatarUpload () {
+  if (avatarUploading.value) return
+  avatarInputRef.value?.click()
+}
+
+/**
+ * 选中文件后：校验 → 上传 → 调 updateProfile 保存 avatar → 更新 store
+ * 后端 uploadImage 返回 { url, fileName, fileSize }
+ * 后端 UpdateProfileDTO 已包含 avatar 字段（见后端 SysUserServiceImpl#updateProfile）
+ */
+async function handleAvatarChange (event) {
+  const file = event.target.files?.[0]
+  // 重置 input.value，确保选同一个文件也能再次触发 change
+  event.target.value = ''
+  if (!file) return
+
+  // 前端二次校验：MIME + 大小 ≤ 5MB
+  const allow = ['image/png', 'image/jpeg', 'image/jpg']
+  if (!allow.includes(file.type)) {
+    ElMessage.warning('仅支持 PNG / JPG 格式的图片')
+    return
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    ElMessage.warning('图片大小不能超过 5MB')
+    return
+  }
+
+  avatarUploading.value = true
+  try {
+    // 1. 上传文件，拿到 url
+    const uploadRes = await uploadImage(file)
+    const avatarUrl = uploadRes.data?.url
+    if (!avatarUrl) {
+      ElMessage.error('上传失败：未获取到图片地址')
+      return
+    }
+
+    // 2. 保存到用户资料
+    const res = await updateProfile({ avatar: avatarUrl })
+
+    // 3. 更新 store（头像在其他页面如 Header 也会用到）
+    const newInfo = { ...(userStore.userInfo || {}), avatar: avatarUrl }
+    userStore.setUserInfo(newInfo)
+    avatarLoadFailed.value = false // 新头像已上传，清除之前的失败标记
+    if (res.data && typeof res.data === 'object') {
+      userStore.setUserInfo(res.data)
+    }
+
+    ElMessage.success('头像更新成功')
+  } catch (e) {
+    // 错误提示由响应拦截器处理
+  } finally {
+    avatarUploading.value = false
+  }
 }
 
 /** 用当前用户信息回填表单 */
@@ -514,6 +644,7 @@ onMounted(async () => {
 }
 
 .avatar {
+  position: relative;
   width: 66px;
   height: 66px;
   border-radius: 50%;
@@ -525,6 +656,50 @@ onMounted(async () => {
   justify-content: center;
   letter-spacing: -0.5px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.avatar:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+/* 实际头像图片 */
+.avatar__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* hover 遮罩：相机图标 + "更换头像" */
+.avatar__mask {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.55);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.avatar:hover .avatar__mask {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.avatar__mask span {
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .status-badge {
