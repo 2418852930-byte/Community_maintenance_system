@@ -573,12 +573,12 @@ onMounted(async () => {
 
 .toolbar-tip {
   font-size: 12px;
-  color: #909399;
+  color: #64748b;
 }
 
 .sub-text {
   font-size: 12px;
-  color: #909399;
+  color: #94a3b8;
 }
 
 .desc-text {

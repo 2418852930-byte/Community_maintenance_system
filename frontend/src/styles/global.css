@@ -351,3 +351,167 @@ body {
   border-radius: 12px !important;
   border: none !important;
 }
+
+/* ---------- Tabs：毛玻璃风格 ---------- */
+.el-tabs {
+  --el-tabs-header-height: 44px;
+}
+
+.el-tabs__nav-wrap::after {
+  height: 1px;
+  background-color: rgba(15, 23, 42, 0.06);
+}
+
+.el-tabs__item {
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+  transition: color 0.2s ease;
+}
+
+.el-tabs__item:hover {
+  color: #0f172a;
+}
+
+.el-tabs__item.is-active {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.el-tabs__active-bar {
+  height: 2px;
+  background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+  border-radius: 2px;
+}
+
+.el-tabs__nav-next,
+.el-tabs__nav-prev {
+  line-height: 44px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* ---------- Radio：毛玻璃风格 ---------- */
+.el-radio {
+  font-size: 13px;
+  color: #475569;
+}
+
+.el-radio__inner {
+  border-color: rgba(15, 23, 42, 0.2);
+  background: rgba(255, 255, 255, 0.6);
+  transition: all 0.2s ease;
+}
+
+.el-radio__input.is-checked .el-radio__inner {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  border-color: transparent;
+}
+
+.el-radio__input.is-checked + .el-radio__label {
+  color: #0f172a;
+  font-weight: 500;
+}
+
+/* ---------- Checkbox ---------- */
+.el-checkbox {
+  font-size: 13px;
+  color: #475569;
+}
+
+.el-checkbox__inner {
+  border-radius: 4px;
+  border-color: rgba(15, 23, 42, 0.2);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  border-color: transparent;
+}
+
+/* ---------- Descriptions：毛玻璃风格 ---------- */
+.el-descriptions {
+  --el-descriptions-table-border: rgba(15, 23, 42, 0.06);
+}
+
+.el-descriptions__label {
+  color: #64748b;
+  font-weight: 500;
+  background: rgba(15, 23, 42, 0.02) !important;
+}
+
+.el-descriptions__content {
+  color: #0f172a;
+}
+
+/* ---------- Timeline：毛玻璃风格 ---------- */
+.el-timeline-item__wrapper {
+  padding-left: 18px;
+}
+
+.el-timeline-item__dot {
+  border-width: 2px;
+  background: #fff;
+}
+
+/* ---------- Upload picture-card ---------- */
+.el-upload--picture-card {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px dashed rgba(15, 23, 42, 0.15);
+  border-radius: 10px;
+  color: #64748b;
+  transition: all 0.2s ease;
+}
+
+.el-upload--picture-card:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.04);
+}
+
+.el-upload-list--picture-card .el-upload-list__item {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* ---------- Progress：毛玻璃下更柔和 ---------- */
+.el-progress-bar__outer {
+  background: rgba(15, 23, 42, 0.06);
+  border-radius: 9999px;
+}
+
+.el-progress-bar__inner {
+  border-radius: 9999px;
+}
+
+/* ---------- Drawer / Dialog 里的 Descriptions ---------- */
+.el-dialog .el-descriptions__body,
+.el-drawer .el-descriptions__body {
+  background: transparent;
+}
+
+.el-dialog .el-descriptions__table,
+.el-drawer .el-descriptions__table {
+  background: transparent;
+}
+
+/* ---------- Tag 颜色柔和化 ---------- */
+.el-tag {
+  padding: 0 10px;
+  height: 24px;
+  line-height: 22px;
+}
+
+/* ---------- 全局过渡：更顺滑 ---------- */
+* {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.15s;
+}
+
+/* 立即生效的属性不过渡 */
+.el-button__text,
+.el-icon {
+  transition: none;
+}

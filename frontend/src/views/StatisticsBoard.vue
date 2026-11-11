@@ -804,7 +804,8 @@ onMounted(() => {
 
 .filter-label {
   font-size: 13px;
-  color: #606266;
+  color: #64748b;
+  font-weight: 500;
   white-space: nowrap;
 }
 
@@ -828,12 +829,13 @@ onMounted(() => {
   align-items: center;
   gap: 4px;
   font-size: 13px;
-  color: #909399;
+  color: #64748b;
+  font-weight: 500;
 }
 
 .metric-card__tip {
   cursor: help;
-  color: #c0c4cc;
+  color: #94a3b8;
 }
 
 .metric-card__value {
@@ -852,7 +854,7 @@ onMounted(() => {
 .metric-card__extra {
   margin-top: 6px;
   font-size: 12px;
-  color: #a8abb2;
+  color: #94a3b8;
 }
 
 /* ---------- 通用区块卡片 ---------- */
@@ -870,12 +872,12 @@ onMounted(() => {
 .block-card__title {
   font-size: 15px;
   font-weight: 600;
-  color: #303133;
+  color: #0f172a;
 }
 
 .block-card__desc {
   font-size: 12px;
-  color: #909399;
+  color: #94a3b8;
 }
 
 /* ---------- 状态计数卡 ---------- */
@@ -888,29 +890,43 @@ onMounted(() => {
 .status-count {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  background-color: #fafafa;
-  border-radius: 6px;
+  gap: 10px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.status-count:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(59, 130, 246, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.06);
 }
 
 .status-count__dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.04);
 }
 
 .status-count__name {
   flex: 1;
   font-size: 13px;
-  color: #606266;
+  color: #475569;
+  font-weight: 500;
   white-space: nowrap;
 }
 
 .status-count__num {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: -0.3px;
 }
 
 /* ---------- 图表行 ---------- */

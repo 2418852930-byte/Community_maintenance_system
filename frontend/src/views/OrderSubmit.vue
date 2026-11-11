@@ -384,23 +384,23 @@ onMounted(async () => {
   gap: 12px;
   margin-bottom: 16px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #ebeef5;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
 }
 
 .card-title {
   font-size: 16px;
   font-weight: 600;
-  color: #303133;
+  color: #0f172a;
 }
 
 .card-tip {
   font-size: 12px;
-  color: #909399;
+  color: #64748b;
 }
 
 .form-tip {
   font-size: 12px;
-  color: #909399;
+  color: #64748b;
   line-height: 18px;
 }
 
