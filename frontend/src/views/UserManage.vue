@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="page-container">
     <div class="page-card">
       <!-- ============ 搜索区（U-08 查询条件） ============ -->
@@ -40,7 +40,7 @@
       </div>
 
       <!-- ============ 用户列表（U-08） ============ -->
-      <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%">
+      <el-table v-loading="loading" :data="tableData" style="width: 100%">
         <el-table-column prop="userId" label="用户ID" width="80" align="center" />
         <el-table-column prop="username" label="用户名" min-width="120" show-overflow-tooltip />
         <el-table-column prop="realName" label="真实姓名" min-width="100" show-overflow-tooltip />
@@ -70,7 +70,7 @@
         </el-table-column>
         <el-table-column prop="lastLoginTime" label="最后登录时间" width="170" />
         <el-table-column prop="createTime" label="创建时间" width="170" />
-        <el-table-column label="操作" width="300" fixed="right">
+        <el-table-column label="操作" width="300">
           <template #default="{ row }">
             <el-button link type="primary" size="small" @click="openDetailDrawer(row)">详情</el-button>
             <el-button link type="primary" size="small" @click="openEditDialog(row)">编辑</el-button>

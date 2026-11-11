@@ -1,4 +1,9 @@
-/* 全局基础样式 */
+/* ================================================================
+   社区便民报修系统 — 全局样式（毛玻璃风格）
+   设计规范：白色毛玻璃 + 细边框 + 柔和极光背景
+   ================================================================ */
+
+/* ---------- 基础重置 ---------- */
 * {
   box-sizing: border-box;
 }
@@ -11,59 +16,338 @@ body,
   padding: 0;
 }
 
+/* ---------- 页面背景：极光渐变 + 模糊色斑 ---------- */
 body {
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+  font-family: 'Inter', 'Helvetica Neue', 'PingFang SC', 'Hiragino Sans GB',
     'Microsoft YaHei', Arial, sans-serif;
   font-size: 14px;
-  color: #303133;
-  background-color: #f5f7fa;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8fafc;
+  /* 极光渐变背景 */
+  background-image:
+    radial-gradient(ellipse 60% 50% at 15% 20%, #dbeafe 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 90% 85%, #ede9fe 0%, transparent 55%),
+    radial-gradient(ellipse 45% 35% at 85% 15%, #dcfce7 0%, transparent 50%),
+    radial-gradient(ellipse 40% 30% at 10% 90%, #fce7f3 0%, transparent 50%);
+  background-attachment: fixed;
 }
 
-/* 登录 / 注册 / 忘记密码 三个页面共用的居中卡片容器 */
+/* ---------- 毛玻璃通用工具类 ---------- */
+.glass-card {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 16px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.02),
+    0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+.glass-card-strong {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 20px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.02),
+    0 8px 32px rgba(15, 23, 42, 0.06);
+}
+
+/* ---------- 登录/注册页 ---------- */
 .auth-page {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #409eff 0%, #79bbff 100%);
+  padding: 24px;
+  background-image:
+    radial-gradient(ellipse 55% 45% at 12% 22%, #dbeafe 0%, transparent 60%),
+    radial-gradient(ellipse 48% 38% at 88% 82%, #ede9fe 0%, transparent 55%),
+    radial-gradient(ellipse 42% 32% at 82% 14%, #dcfce7 0%, transparent 50%);
+  background-attachment: fixed;
 }
 
 .auth-card {
-  width: 460px;
-  padding: 32px 36px 24px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  width: 440px;
+  max-width: 100%;
+  padding: 40px 44px 32px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.02),
+    0 8px 32px rgba(15, 23, 42, 0.06);
 }
 
 .auth-title {
   margin: 0 0 6px;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
-  color: #303133;
+  color: #0f172a;
   text-align: center;
 }
 
 .auth-subtitle {
-  margin: 0 0 24px;
+  margin: 0 0 28px;
   font-size: 13px;
-  color: #909399;
+  color: #94a3b8;
   text-align: center;
 }
 
 .auth-footer {
-  margin-top: 8px;
+  margin-top: 12px;
   text-align: center;
 }
 
-/* 页面通用容器 */
+/* ---------- 页面通用容器 ---------- */
 .page-container {
-  padding: 16px;
+  padding: 24px;
 }
 
 .page-card {
-  background-color: #ffffff;
-  border-radius: 6px;
-  padding: 16px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.02),
+    0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+/* ================================================================
+   Element Plus 全局覆盖 —— 让默认组件适配毛玻璃风格
+   ================================================================ */
+
+/* 卡片：去掉默认阴影 */
+.el-card {
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(20px) saturate(1.8) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.65) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02), 0 4px 16px rgba(15, 23, 42, 0.04) !important;
+  color: #0f172a;
+}
+
+.el-card__header {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  padding: 16px 20px 12px;
+}
+
+.el-card__body {
+  padding: 16px 20px 20px;
+}
+
+/* 输入框：玻璃质感 */
+.el-input__wrapper,
+.el-textarea__inner,
+.el-select__wrapper,
+.el-cascader .el-select__wrapper {
+  background: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.08) inset !important;
+  border-radius: 10px !important;
+}
+
+.el-input__wrapper.is-focus,
+.el-select__wrapper.is-focused {
+  box-shadow: 0 0 0 1px #3b82f6 inset, 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* 表格：去掉重边框，纯毛玻璃 */
+.el-table {
+  background: transparent !important;
+  width: 100% !important;
+  --el-table-border-color: rgba(15, 23, 42, 0.06);
+  --el-table-header-bg-color: transparent;
+  --el-table-row-hover-bg-color: rgba(59, 130, 246, 0.04);
+  --el-table-bg-color: transparent;
+  --el-table-tr-bg-color: transparent;
+  --el-table-header-text-color: #64748b;
+  --el-table-text-color: #0f172a;
+  --el-table-cell-height: 52px;
+  --el-table-header-cell-height: 48px;
+  border-radius: 12px !important;
+  overflow: hidden;
+  table-layout: auto !important;
+}
+
+.el-table th.el-table__cell {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+  font-weight: 600;
+  font-size: 13px;
+  color: #64748b;
+  padding: 12px 0 !important;
+}
+
+.el-table td.el-table__cell {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.04) !important;
+  font-size: 13px;
+  padding: 14px 0 !important;
+}
+
+.el-table .cell {
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+  line-height: 1.5 !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+}
+
+.el-table th .cell {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
+  background: transparent !important;
+}
+
+.el-table .el-table__row:hover > td {
+  background: rgba(59, 130, 246, 0.04) !important;
+}
+
+/* 表格去掉外边框和圆角装饰 */
+.el-table--border,
+.el-table--group {
+  border: none !important;
+}
+.el-table--border::before,
+.el-table--border::after,
+.el-table__inner-wrapper::before {
+  display: none !important;
+}
+
+/* 按钮：毛玻璃质感 */
+.el-button {
+  border-radius: 10px !important;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.el-button--primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%) !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: 0 1px 2px rgba(59, 130, 246, 0.25), 0 4px 12px rgba(139, 92, 246, 0.15) !important;
+}
+
+.el-button--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3), 0 6px 16px rgba(139, 92, 246, 0.2) !important;
+}
+
+.el-button:not(.el-button--primary):not(.el-button--danger):not(.el-button--success):not(.el-button--warning) {
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  color: #475569 !important;
+}
+
+.el-button:not(.el-button--primary):not(.el-button--danger):not(.el-button--success):not(.el-button--warning):hover {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+  color: #3b82f6 !important;
+}
+
+/* Dialog 弹窗：毛玻璃 */
+.el-dialog {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(24px) saturate(1.8) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.75) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02), 0 8px 32px rgba(15, 23, 42, 0.08) !important;
+}
+
+.el-dialog__header {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  padding: 20px 24px 16px;
+}
+
+.el-dialog__body {
+  padding: 20px 24px;
+}
+
+.el-dialog__footer {
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+  padding: 16px 24px 20px;
+}
+
+/* Drawer 抽屉：毛玻璃 */
+.el-drawer {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(24px) saturate(1.8) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.8) !important;
+  border-left: 1px solid rgba(15, 23, 42, 0.06) !important;
+  box-shadow: -8px 0 32px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* Tag 标签：毛玻璃胶囊 */
+.el-tag {
+  border-radius: 8px !important;
+  font-weight: 500;
+}
+
+/* 分页 */
+.el-pagination.is-background .el-pager li:not(.is-disabled).is-active {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  color: #fff;
+  border-radius: 8px;
+}
+
+.el-pagination.is-background .el-pager li {
+  border-radius: 8px;
+}
+
+/* Form 标签 */
+.el-form-item__label {
+  color: #64748b !important;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+/* Inline form 自动换行 + 合理间距 */
+.el-form--inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+}
+
+.el-form--inline .el-form-item {
+  margin-right: 0 !important;
+  margin-bottom: 8px !important;
+}
+
+/* Dialog 里的 form */
+.el-dialog .el-form {
+  padding: 4px 0;
+}
+
+.el-dialog .el-form-item {
+  margin-bottom: 20px;
+}
+
+/* Drawer 里的 form */
+.el-drawer .el-form-item {
+  margin-bottom: 20px;
+}
+
+/* Alert */
+.el-alert {
+  border-radius: 12px !important;
+  border: none !important;
 }

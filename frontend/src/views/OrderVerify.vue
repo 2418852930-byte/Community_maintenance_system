@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="page-container">
     <div class="page-card">
       <!-- ============ 页面说明（按角色给出不同引导） ============ -->
@@ -65,7 +65,7 @@
       </div>
 
       <!-- ============ 待验收工单列表（V-01） ============ -->
-      <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%">
+      <el-table v-loading="loading" :data="tableData" style="width: 100%">
         <el-table-column prop="orderNo" label="工单编号" width="150" align="center" />
         <el-table-column prop="title" label="报修标题" min-width="140" show-overflow-tooltip />
         <el-table-column prop="categoryName" label="报修类目" min-width="140" show-overflow-tooltip />
@@ -103,7 +103,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="330" fixed="right">
+        <el-table-column label="操作" width="330">
           <template #default="{ row }">
             <el-button link type="primary" size="small" @click="goDetail(row)">工单详情</el-button>
             <el-button link type="info" size="small" @click="openRepairRecords(row)">维修过程</el-button>

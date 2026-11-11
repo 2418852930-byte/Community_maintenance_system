@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="page-container">
     <div class="page-card">
       <!-- ============ 搜索区（O-02 查询条件） ============ -->
@@ -77,7 +77,7 @@
       </div>
 
       <!-- ============ 工单列表（O-02） ============ -->
-      <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%">
+      <el-table v-loading="loading" :data="tableData" style="width: 100%">
         <el-table-column prop="orderNo" label="工单编号" width="150" align="center" />
         <el-table-column prop="title" label="报修标题" min-width="150" show-overflow-tooltip />
         <el-table-column prop="categoryName" label="报修类目" min-width="150" show-overflow-tooltip />
@@ -110,7 +110,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="createTime" label="提交时间" width="170" />
-        <el-table-column label="操作" width="220" fixed="right">
+        <el-table-column label="操作" width="220">
           <template #default="{ row }">
             <el-button link type="primary" size="small" @click="goDetail(row)">详情</el-button>
             <!-- 可修改：状态 8 待审核 / 0 待派单（与服务端 O-04 状态域一致） -->
@@ -349,22 +349,25 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .toolbar-tip {
   font-size: 12px;
-  color: #909399;
+  color: #94a3b8;
 }
 
 .sub-text {
   font-size: 12px;
-  color: #909399;
+  color: #94a3b8;
 }
 
 .overdue {
-  margin-top: 2px;
+  margin-top: 4px;
   font-size: 12px;
-  color: #e6a23c;
+  color: #f59e0b;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
 }
 </style>

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="page-container">
     <div class="page-card">
       <el-alert type="info" :closable="false" show-icon style="margin-bottom: 12px">
@@ -84,7 +84,7 @@
       </div>
 
       <!-- ============ 评价列表（E-02） ============ -->
-      <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%">
+      <el-table v-loading="loading" :data="tableData" style="width: 100%">
         <el-table-column prop="orderNo" label="工单编号" width="150" align="center" />
         <el-table-column prop="categoryName" label="报修类目" min-width="140" show-overflow-tooltip />
 
@@ -126,7 +126,7 @@
           <template #default="{ row }">{{ row.createTime || '-' }}</template>
         </el-table-column>
 
-        <el-table-column label="操作" width="150" fixed="right">
+        <el-table-column label="操作" width="150">
           <template #default="{ row }">
             <el-button link type="primary" size="small" @click="openDetail(row)">详情</el-button>
             <el-button

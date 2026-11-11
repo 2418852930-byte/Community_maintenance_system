@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="page-container">
     <div class="page-card">
       <!-- ============ 页面说明（按角色给出不同引导） ============ -->
@@ -26,7 +26,7 @@
             <el-badge v-if="pendingTotal > 0" :value="pendingTotal" class="tab-badge" />
           </template>
 
-          <el-table v-loading="pendingLoading" :data="pendingList" border stripe style="width: 100%">
+          <el-table v-loading="pendingLoading" :data="pendingList" style="width: 100%">
             <el-table-column prop="orderNo" label="工单编号" width="150" align="center" />
             <el-table-column prop="title" label="报修标题" min-width="140" show-overflow-tooltip />
             <el-table-column prop="categoryName" label="报修类目" min-width="140" show-overflow-tooltip />
@@ -48,7 +48,7 @@
                 </el-tag>
               </template>
             </el-table-column>
-            <el-table-column label="操作" width="170" fixed="right">
+            <el-table-column label="操作" width="170">
               <template #default="{ row }">
                 <el-button link type="primary" size="small" @click="goDetail(row)">工单详情</el-button>
                 <el-button link type="success" size="small" @click="openSubmit(row)">去评价</el-button>
@@ -116,7 +116,7 @@
             </span>
           </div>
 
-          <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%">
+          <el-table v-loading="loading" :data="tableData" style="width: 100%">
             <el-table-column prop="orderNo" label="工单编号" width="150" align="center" />
             <el-table-column prop="categoryName" label="报修类目" min-width="140" show-overflow-tooltip />
 
@@ -158,7 +158,7 @@
               <template #default="{ row }">{{ row.createTime || '-' }}</template>
             </el-table-column>
 
-            <el-table-column label="操作" width="90" fixed="right">
+            <el-table-column label="操作" width="90">
               <template #default="{ row }">
                 <el-button link type="primary" size="small" @click="openDetail(row)">详情</el-button>
               </template>

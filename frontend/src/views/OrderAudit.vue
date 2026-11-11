@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="page-container">
     <div class="page-card">
       <!-- ============ 页面说明 ============ -->
@@ -64,7 +64,7 @@
       </div>
 
       <!-- ============ 待审核工单列表（复用 O-02，status 固定 8） ============ -->
-      <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%">
+      <el-table v-loading="loading" :data="tableData" style="width: 100%">
         <el-table-column prop="orderNo" label="工单编号" width="150" align="center" />
         <el-table-column prop="title" label="报修标题" min-width="150" show-overflow-tooltip />
         <el-table-column prop="categoryName" label="报修类目" min-width="150" show-overflow-tooltip />
@@ -94,7 +94,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="createTime" label="提交时间" width="170" />
-        <el-table-column label="操作" width="230" fixed="right">
+        <el-table-column label="操作" width="230">
           <template #default="{ row }">
             <el-button link type="primary" size="small" @click="goDetail(row)">详情</el-button>
             <el-button link type="success" size="small" @click="handleAuditPass(row)">审核通过</el-button>

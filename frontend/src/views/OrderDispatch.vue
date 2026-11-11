@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="page-container">
     <div class="page-card">
       <!-- ============ 页面说明 ============ -->
@@ -100,7 +100,7 @@
               </template>
             </el-table-column>
             <el-table-column prop="createTime" label="提交时间" width="170" />
-            <el-table-column label="操作" width="270" fixed="right">
+            <el-table-column label="操作" width="270">
               <template #default="{ row }">
                 <el-button link type="primary" size="small" @click="goDetail(row)">详情</el-button>
                 <el-button link type="success" size="small" @click="openDispatch(row)">派单</el-button>
@@ -151,7 +151,7 @@
             </span>
           </div>
 
-          <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%">
+          <el-table v-loading="loading" :data="tableData" style="width: 100%">
             <el-table-column prop="orderNo" label="工单编号" width="150" align="center" />
             <el-table-column prop="title" label="报修标题" min-width="150" show-overflow-tooltip />
             <el-table-column prop="categoryName" label="报修类目" min-width="150" show-overflow-tooltip />
@@ -175,7 +175,7 @@
               </template>
             </el-table-column>
             <el-table-column prop="createTime" label="提交时间" width="170" />
-            <el-table-column label="操作" width="220" fixed="right">
+            <el-table-column label="操作" width="220">
               <template #default="{ row }">
                 <el-button link type="primary" size="small" @click="goDetail(row)">详情</el-button>
                 <el-button link type="warning" size="small" @click="openReassign(row)">改派</el-button>

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="page-container">
     <div class="page-card">
       <!-- ============ 搜索区（C-01 查询条件） ============ -->
@@ -46,7 +46,7 @@
       </div>
 
       <!-- ============ 类目列表（C-01） ============ -->
-      <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%">
+      <el-table v-loading="loading" :data="tableData" style="width: 100%">
         <el-table-column prop="categoryId" label="类目ID" width="90" align="center" />
         <el-table-column prop="categoryName" label="类目名称" min-width="140" show-overflow-tooltip />
         <el-table-column label="上级类目" min-width="130" show-overflow-tooltip>
@@ -70,7 +70,7 @@
         <el-table-column prop="description" label="类目说明" min-width="200" show-overflow-tooltip />
         <el-table-column prop="createTime" label="创建时间" width="170" />
         <el-table-column prop="updateTime" label="更新时间" width="170" />
-        <el-table-column label="操作" width="150" fixed="right">
+        <el-table-column label="操作" width="150">
           <template #default="{ row }">
             <el-button link type="primary" size="small" @click="openEditDialog(row)">编辑</el-button>
             <el-button link type="danger" size="small" @click="handleDelete(row)">删除</el-button>

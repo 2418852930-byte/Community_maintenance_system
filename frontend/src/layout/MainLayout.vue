@@ -1,18 +1,23 @@
 <template>
   <el-container class="layout">
     <!-- 左侧菜单：按当前登录角色动态过滤（角色菜单隔离） -->
-    <el-aside width="220px" class="layout-aside">
+    <el-aside width="240px" class="layout-aside">
       <div class="logo">
-        <el-icon :size="22"><HomeFilled /></el-icon>
-        <span class="logo-text">社区便民报修</span>
+        <div class="logo-icon">
+          <el-icon :size="20"><Tools /></el-icon>
+        </div>
+        <div class="logo-text-group">
+          <span class="logo-title">社区便民报修</span>
+          <span class="logo-sub">维修管理系统</span>
+        </div>
       </div>
 
       <el-menu
         :default-active="activeMenu"
         router
-        background-color="#001529"
-        text-color="rgba(255,255,255,0.75)"
-        active-text-color="#ffffff"
+        background-color="transparent"
+        text-color="#64748b"
+        active-text-color="#0f172a"
       >
         <el-menu-item v-for="item in menus" :key="item.path" :index="item.path">
           <el-icon><component :is="item.icon" /></el-icon>
@@ -24,15 +29,18 @@
     <el-container>
       <!-- 顶部栏 -->
       <el-header class="layout-header">
-        <div class="header-title">{{ currentTitle }}</div>
+        <div class="header-title">
+          <span class="breadcrumb">工作台 /</span>
+          <span class="current">{{ currentTitle }}</span>
+        </div>
 
         <div class="header-right">
-          <el-tag :type="roleTagType" size="small" effect="dark">{{ userStore.roleName }}</el-tag>
+          <span class="role-tag" :class="'role-tag--' + userStore.role">{{ userStore.roleName }}</span>
           <el-dropdown @command="handleCommand">
             <span class="user-dropdown">
-              <el-icon><UserFilled /></el-icon>
+              <span class="avatar">{{ (userStore.userInfo?.realName || 'U').charAt(0) }}</span>
               <span class="user-name">{{ userStore.userInfo?.realName || '未登录' }}</span>
-              <el-icon><ArrowDown /></el-icon>
+              <el-icon class="arrow"><ArrowDown /></el-icon>
             </span>
             <template #dropdown>
               <el-dropdown-menu>
@@ -129,41 +137,126 @@ async function handleCommand (command) {
   height: 100vh;
 }
 
+/* ---------- 侧边栏 —— 毛玻璃 ---------- */
 .layout-aside {
-  background-color: #001529;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border-right: 1px solid rgba(15, 23, 42, 0.06);
   overflow-y: auto;
+  transition: background 0.3s ease;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 8px;
-  height: 60px;
-  padding: 0 16px;
-  color: #ffffff;
-  font-size: 16px;
+  gap: 12px;
+  height: 64px;
+  padding: 0 20px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+}
+
+.logo-text-group {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.logo-title {
+  font-size: 15px;
   font-weight: 600;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: #0f172a;
 }
 
-.logo-text {
-  white-space: nowrap;
+.logo-sub {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 2px;
 }
 
+/* el-menu 深度覆盖 —— 毛玻璃侧栏上的菜单项 */
+:deep(.el-menu) {
+  border-right: none;
+  padding: 12px 10px;
+}
+
+:deep(.el-menu-item) {
+  border-radius: 10px !important;
+  margin: 2px 0 !important;
+  height: 42px !important;
+  line-height: 42px !important;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+:deep(.el-menu-item:hover) {
+  background: rgba(15, 23, 42, 0.03) !important;
+}
+
+:deep(.el-menu-item.is-active) {
+  background: rgba(59, 130, 246, 0.08) !important;
+  color: #0f172a !important;
+  font-weight: 600;
+  position: relative;
+}
+
+:deep(.el-menu-item.is-active)::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+}
+
+:deep(.el-menu-item .el-icon) {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+/* ---------- 顶栏 —— 毛玻璃 ---------- */
 .layout-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
-  padding: 0 20px;
-  background-color: #ffffff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  height: 56px;
+  padding: 0 24px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(16px) saturate(1.8);
+  -webkit-backdrop-filter: blur(16px) saturate(1.8);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
 }
 
 .header-title {
-  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.header-title .breadcrumb {
+  color: #94a3b8;
+}
+
+.header-title .current {
+  color: #0f172a;
   font-weight: 600;
-  color: #303133;
+  font-size: 15px;
 }
 
 .header-right {
@@ -172,27 +265,84 @@ async function handleCommand (command) {
   gap: 16px;
 }
 
+/* 角色标签 */
+.role-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.role-tag--admin {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.role-tag--repair {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.role-tag--resident {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+/* 用户下拉 */
 .user-dropdown {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
+  padding: 4px 12px 4px 4px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(15, 23, 42, 0.06);
   cursor: pointer;
-  color: #303133;
+  color: #0f172a;
   outline: none;
+  transition: all 0.2s ease;
+}
+
+.user-dropdown:hover {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .user-name {
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 500;
 }
 
+.user-dropdown .arrow {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* ---------- 内容区 ---------- */
 .layout-main {
-  padding: 16px;
-  background-color: #f5f7fa;
+  padding: 24px;
   overflow-y: auto;
-}
-
-/* 让 el-menu 在深色侧栏上不出现白边 */
-:deep(.el-menu) {
-  border-right: none;
 }
 </style>

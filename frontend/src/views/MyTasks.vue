@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="page-container">
     <div class="page-card">
       <!-- ============ 页面说明 ============ -->
@@ -42,7 +42,7 @@
         <span class="toolbar-tip">{{ tabTip }}</span>
       </div>
 
-      <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%">
+      <el-table v-loading="loading" :data="tableData" style="width: 100%">
         <el-table-column prop="orderNo" label="工单编号" width="150" align="center" />
         <el-table-column prop="title" label="报修标题" min-width="150" show-overflow-tooltip />
         <el-table-column prop="categoryName" label="报修类目" min-width="140" show-overflow-tooltip />
@@ -74,7 +74,7 @@
             <span class="cost">¥ {{ Number(row.totalCost || 0).toFixed(2) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="270" fixed="right">
+        <el-table-column label="操作" width="380" class-name="op-cell">
           <template #default="{ row }">
             <el-button link type="primary" size="small" @click="goDetail(row)">详情</el-button>
 
@@ -487,5 +487,20 @@ onMounted(() => {
 .cost {
   color: #e6a23c;
   font-weight: 600;
+}
+
+/* 操作列：按钮强制单行显示，避免被挤压折行 */
+:deep(.op-cell .cell) {
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+}
+
+:deep(.op-cell .el-button) {
+  margin-left: 0 !important;
+  margin-right: 10px;
+}
+
+:deep(.op-cell .el-button:last-child) {
+  margin-right: 0;
 }
 </style>
